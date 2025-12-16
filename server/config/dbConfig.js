@@ -3,19 +3,16 @@ import mongoose from "mongoose";
 
 dotenv.config({ path: "./config.env" });
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.CONN_STRING, {
-      serverSelectionTimeoutMS: 30000,
-      socketTimeoutMS: 45000,
-    });
-
-    console.log("DB connection successful!");
-  } catch (error) {
-    console.error("DB connection failed:", error.message);
+mongoose
+  .connect(process.env.CONN_STRING, {
+    serverSelectionTimeoutMS: 30000,
+    socketTimeoutMS: 45000,
+  })
+  .then(() => console.log("DB connection successful!"))
+  .catch((err) => {
+    console.error("DB connection failed:", err.message);
     process.exit(1);
-  }
-};
+  });
 
 const db = mongoose.connection;
 
@@ -31,4 +28,4 @@ db.on("disconnected", () => {
   console.log("Mongoose default connection is disconnected");
 });
 
-export { connectDB, db };
+export default db;
