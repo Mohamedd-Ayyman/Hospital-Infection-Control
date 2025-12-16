@@ -70,8 +70,9 @@ export default function UserManagementPage() {
 
   const handleApproveUser = async (userId) => {
     try {
-      const data = await apiCall(`/api/user/approve-user/${userId}`);
-
+      const data = await apiCall(`/api/user/approve-user/${userId}`, {
+        method: "POST",
+      });
       if (data.success) {
         setMessage({ text: "User approved successfully!", type: "success" });
         fetchUsers();
@@ -158,7 +159,7 @@ export default function UserManagementPage() {
                 className={`px-8 py-4 rounded-full font-semibold text-lg transition-all ${
                   activeTab === "pending"
                     ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg"
-                    : "bg-white bg-opacity-10 text-white hover:bg-opacity-20"
+                    : "bg-white bg-opacity-10 text-black hover:bg-opacity-20"
                 }`}
               >
                 Pending Approvals ({pendingUsers.length})
@@ -168,7 +169,7 @@ export default function UserManagementPage() {
                 className={`px-8 py-4 rounded-full font-semibold text-lg transition-all ${
                   activeTab === "all"
                     ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
-                    : "bg-white bg-opacity-10 text-white hover:bg-opacity-20"
+                    : "bg-white bg-opacity-10 text-black hover:bg-opacity-20"
                 }`}
               >
                 All Users ({allUsers.length})
@@ -214,11 +215,11 @@ export default function UserManagementPage() {
                                 <span
                                   className={`px-3 py-1 text-xs ${getRoleBadgeColor(
                                     user.role
-                                  )} bg-opacity-20 rounded-full border border-opacity-30 font-semibold`}
+                                  )}  bg-opacity-20 text-white rounded-full border border-opacity-30 font-semibold`}
                                 >
                                   {user.role}
                                 </span>
-                                <span className="px-3 py-1 text-xs bg-white bg-opacity-10 text-white rounded-full">
+                                <span className="px-3 py-1 text-xs bg-white bg-opacity-10 text-black rounded-full">
                                   {user.department}
                                 </span>
                               </div>
@@ -262,28 +263,28 @@ export default function UserManagementPage() {
                             <h3 className="text-xl font-bold text-white mb-1">
                               {user.firstname} {user.lastname}
                             </h3>
-                            <p className="text-sm text-white opacity-70">
+                            <p className="text-sm text-white opacity-90">
                               {user.email}
                             </p>
                             <div className="flex items-center gap-2 mt-2">
                               <span
                                 className={`px-3 py-1 text-xs ${getRoleBadgeColor(
                                   user.role
-                                )} bg-opacity-20 rounded-full border border-opacity-30 font-semibold`}
+                                )} bg-opacity-20 text-white rounded-full border border-opacity-30 font-semibold`}
                               >
                                 {user.role}
                               </span>
                               {user.department && (
-                                <span className="px-3 py-1 text-xs bg-white bg-opacity-10 text-white rounded-full">
+                                <span className="px-3 py-1 text-xs bg-white bg-opacity-10 text-black rounded-full">
                                   {user.department}
                                 </span>
                               )}
                               <span
                                 className={`px-3 py-1 text-xs ${
                                   user.isApproved
-                                    ? "bg-green-500 text-green-400"
-                                    : "bg-yellow-500 text-yellow-400"
-                                } bg-opacity-20 rounded-full border border-opacity-30 font-semibold`}
+                                    ? "bg-green-500 text-black"
+                                    : "bg-yellow-500 text-black"
+                                } bg-opacity-20 rounded-full border-white border-1 border-opacity-30 font-semibold`}
                               >
                                 {user.isApproved ? "Approved" : "Pending"}
                               </span>

@@ -49,7 +49,9 @@ export default function AuditPage() {
       setLoading(true);
       const token = localStorage.getItem("token");
 
-      const data = await apiCall("/api/audits/get-all");
+      const data = await apiCall("/api/audits/get-all", {
+        method: "GET",
+      });
 
       if (data.success) {
         setAudits(data.data);
@@ -109,8 +111,12 @@ export default function AuditPage() {
   const handleSubmit = async () => {
     try {
       const token = localStorage.getItem("token");
-   
-      const data = await apiCall("/api/audits/create");
+
+      const data = await apiCall("/api/audits/create", {
+        method: "POST",
+        body: JSON.stringify(formData),
+      });
+
       if (data.success) {
         alert("Audit created successfully!");
         setShowCreateForm(false);

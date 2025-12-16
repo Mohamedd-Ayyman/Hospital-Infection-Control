@@ -78,7 +78,11 @@ export default function RegisterPage() {
     try {
       setLoading(true);
 
-      const data = await apiCall("/api/auth/signup");
+      // ✅ FIXED: Added method and body
+      const data = await apiCall("/api/auth/signup", {
+        method: "POST",
+        body: JSON.stringify(formData),
+      });
 
       if (data.success) {
         setMessage({ text: data.message, type: "success" });

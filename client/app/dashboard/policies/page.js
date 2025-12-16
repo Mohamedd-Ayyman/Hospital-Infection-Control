@@ -89,8 +89,11 @@ export default function PoliciesPage() {
     try {
       const token = localStorage.getItem("token");
 
-      const data = await apiCall("/api/policy/create");
-
+      const data = await apiCall("/api/policy/create", {
+        method: "POST",
+        body: JSON.stringify(formData),
+      });
+      
       if (data.success) {
         setMessage({ text: "Policy created successfully!", type: "success" });
         setShowCreateForm(false);

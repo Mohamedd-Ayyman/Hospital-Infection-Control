@@ -78,7 +78,10 @@ export default function InfectionReportsPage() {
     }
 
     try {
-      const data = await apiCall("/api/infection/create");
+      const data = await apiCall("/api/infection/create", {
+        method: "POST",
+        body: JSON.stringify(formData),
+      });
 
       if (data.success) {
         setMessage({ text: "Report submitted successfully!", type: "success" });

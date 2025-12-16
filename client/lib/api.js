@@ -5,22 +5,16 @@ export const apiCall = async (endpoint, options = {}) => {
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
-  const defaultOptions = {
+  const config = {
+    method: options.method || "GET",
     headers: {
       "Content-Type": "application/json",
       ...(token && { Authorization: `Bearer ${token}` }),
       ...options.headers,
     },
+    ...(options.body && { body: options.body }),
   };
 
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    ...defaultOptions,
-    headers: {
-      ...defaultOptions.headers,
-      ...options.headers,
-    },
-  });
-
+  const response = await fetch(`${API_URL}${endpoint}`, config);
   return response.json();
 };
