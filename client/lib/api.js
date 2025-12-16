@@ -1,6 +1,6 @@
 export const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
-  "https://hospital-infection-control-production.up.railway.app/";
+  "https://hospital-infection-control-production.up.railway.app";
 
 export const apiCall = async (endpoint, options = {}) => {
   const token =
