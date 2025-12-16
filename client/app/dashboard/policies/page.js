@@ -159,7 +159,7 @@ export default function PoliciesPage() {
               </button>
               <button
                 onClick={() => setDeleteConfirm(null)}
-                className="flex-1 px-6 py-3 bg-white bg-opacity-10 text-white rounded-xl font-semibold hover:bg-opacity-20 transition-all"
+                className="flex-1 px-6 py-3 bg-white bg-opacity-10 text-black rounded-xl font-semibold hover:bg-opacity-20 transition-all"
               >
                 Cancel
               </button>
@@ -314,7 +314,7 @@ export default function PoliciesPage() {
                             href={policy.documentURL}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="px-6 py-3 bg-white bg-opacity-10 backdrop-blur-sm text-white rounded-xl font-semibold hover:bg-opacity-20 transition-all"
+                            className="px-6 py-3 bg-white bg-opacity-10 backdrop-blur-sm text-black rounded-xl font-semibold hover:bg-opacity-20 transition-all"
                           >
                             View Document →
                           </a>
