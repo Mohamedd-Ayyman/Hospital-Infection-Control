@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { apiCall } from "@/lib/api";
 
 export default function InfectionReportsPage() {
   const router = useRouter();
@@ -45,25 +46,12 @@ export default function InfectionReportsPage() {
     }
 
     try {
-      const userRes = await fetch(
-        "http://localhost:4000/api/user/get-logged-in",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      const userData = await userRes.json();
+      const userData = await apiCall("/api/user/get-logged-in");
       if (userData.success) {
         setUser(userData.data);
 
         if (userData.data.role === "Admin") {
-          const reportsRes = await fetch(
-            "http://localhost:4000/api/infection/get-all",
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          );
-          const reportsData = await reportsRes.json();
+          const reportsData = await apiCall("/api/infection/get-all");
           if (reportsData.success) {
             setReports(reportsData.data);
           }
@@ -90,20 +78,7 @@ export default function InfectionReportsPage() {
     }
 
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(
-        "http://localhost:4000/api/infection/create",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-
-      const data = await response.json();
+      const data = await apiCall("/api/infection/create");
 
       if (data.success) {
         setMessage({ text: "Report submitted successfully!", type: "success" });

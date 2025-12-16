@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { apiCall } from "@/lib/api";
 
 export default function ProtectedRoute({ children, allowedRoles = [] }) {
   const router = useRouter();
@@ -18,16 +19,7 @@ export default function ProtectedRoute({ children, allowedRoles = [] }) {
       }
 
       try {
-        const response = await fetch(
-          "http://localhost:4000/api/user/get-logged-in",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        const data = await response.json();
+        const data = await apiCall("/api/user/get-logged-in");
 
         if (!data.success) {
           localStorage.removeItem("token");
@@ -37,7 +29,6 @@ export default function ProtectedRoute({ children, allowedRoles = [] }) {
 
         setUser(data.data);
 
-        // Check if user role is allowed
         if (allowedRoles.length > 0 && !allowedRoles.includes(data.data.role)) {
           router.push("/unauthorized");
           return;
@@ -87,16 +78,7 @@ export function useAuth() {
       }
 
       try {
-        const response = await fetch(
-          "http://localhost:4000/api/user/get-logged-in",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        const data = await response.json();
+        const data = await apiCall("/api/user/get-logged-in");
         if (data.success) {
           setUser(data.data);
         }

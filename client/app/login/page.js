@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { apiCall } from "@/lib/api";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -45,15 +46,8 @@ export default function LoginPage() {
 
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:4000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
 
-      const data = await response.json();
+      const data = await apiCall("/api/auth/login");
 
       if (data.success) {
         localStorage.setItem("token", data.token);

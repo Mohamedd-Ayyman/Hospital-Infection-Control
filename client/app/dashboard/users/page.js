@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { apiCall } from "@/lib/api";
 
 export default function UserManagementPage() {
   const router = useRouter();
@@ -69,18 +70,7 @@ export default function UserManagementPage() {
 
   const handleApproveUser = async (userId) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(
-        `http://localhost:4000/api/user/approve-user/${userId}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const data = await response.json();
+      const data = await apiCall(`/api/user/approve-user/${userId}`);
 
       if (data.success) {
         setMessage({ text: "User approved successfully!", type: "success" });

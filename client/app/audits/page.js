@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
+import { apiCall } from "@/lib/api";
 
 export default function AuditPage() {
   const [audits, setAudits] = useState([]);
@@ -47,13 +48,9 @@ export default function AuditPage() {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const response = await fetch("/api/audits/get-all", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
 
-      const data = await response.json();
+      const data = await apiCall("/api/audits/get-all");
+
       if (data.success) {
         setAudits(data.data);
         calculateStats(data.data);
@@ -68,13 +65,8 @@ export default function AuditPage() {
   const fetchPolicies = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("/api/policies/get-all", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
 
-      const data = await response.json();
+      const data = await apiCall("/api/policies/get-all");
       if (data.success) {
         setPolicies(data.data);
       }
@@ -117,16 +109,8 @@ export default function AuditPage() {
   const handleSubmit = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("/api/audits/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
+   
+      const data = await apiCall("/api/audits/create");
       if (data.success) {
         alert("Audit created successfully!");
         setShowCreateForm(false);

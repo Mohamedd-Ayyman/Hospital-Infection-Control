@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { apiCall } from "@/lib/api";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -76,22 +77,8 @@ export default function RegisterPage() {
 
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:4000/api/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstname: formData.firstname,
-          lastname: formData.lastname,
-          email: formData.email,
-          password: formData.password,
-          role: formData.role,
-          department: formData.department,
-        }),
-      });
 
-      const data = await response.json();
+      const data = await apiCall("/api/auth/signup");
 
       if (data.success) {
         setMessage({ text: data.message, type: "success" });

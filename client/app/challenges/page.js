@@ -194,50 +194,50 @@ export default function ChallengesPage() {
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* <Link href="/challenges/solutions?tab=staff"> */}
-                <div className="bg-[#3d9071] bg-opacity-10 backdrop-blur-sm rounded-xl p-4 shadow-md hover:bg-opacity-20 transition-all">
-                  <div className="text-3xl mb-2">📊</div>
-                  <p className="font-semibold text-white text-sm">
-                    Staff Compliance Dashboard
-                  </p>
-                  <p className="text-xs text-white opacity-70 mt-1">
-                    Real-time metrics
-                  </p>
-                </div>
-                {/* </Link>
-                <Link href="/challenges/solutions?tab=audit"> */}
-                <div className="bg-[#3d9071] bg-opacity-10 backdrop-blur-sm rounded-xl p-4 shadow-md hover:bg-opacity-20 transition-all">
-                  <div className="text-3xl mb-2">✅</div>
-                  <p className="font-semibold text-white text-sm">
-                    Electronic Audit Form
-                  </p>
-                  <p className="text-xs text-white opacity-70 mt-1">
-                    Simple & fast
-                  </p>
-                </div>
-                {/* </Link>
-                <Link href="/challenges/solutions?tab=reports"> */}
-                <div className="bg-[#3d9071] bg-opacity-10 backdrop-blur-sm rounded-xl p-4 shadow-md hover:bg-opacity-20 transition-all">
-                  <div className="text-3xl mb-2">📈</div>
-                  <p className="font-semibold text-white text-sm">
-                    Auto-Generated Reports
-                  </p>
-                  <p className="text-xs text-white opacity-70 mt-1">
-                    Instant insights
-                  </p>
-                </div>
-                {/* </Link>
-                <Link href="/challenges/solutions?tab=alerts"> */}
-                <div className="bg-[#3d9071] bg-opacity-10 backdrop-blur-sm rounded-xl p-4 shadow-md hover:bg-opacity-20 transition-all">
-                  <div className="text-3xl mb-2">🔔</div>
-                  <p className="font-semibold text-white text-sm">
-                    Low Performance Alerts
-                  </p>
-                  <p className="text-xs text-white opacity-70 mt-1">
-                    Proactive monitoring
-                  </p>
-                </div>
-                {/* </Link> */}
+                <Link href="/challenges/solutions?tab=staff">
+                  <div className="bg-[#3d9071] bg-opacity-10 backdrop-blur-sm rounded-xl p-4 shadow-md hover:bg-opacity-20 transition-all cursor-pointer">
+                    <div className="text-3xl mb-2">📊</div>
+                    <p className="font-semibold text-white text-sm">
+                      Staff Compliance Dashboard
+                    </p>
+                    <p className="text-xs text-white opacity-70 mt-1">
+                      Real-time metrics
+                    </p>
+                  </div>
+                </Link>
+                <Link href="/challenges/solutions?tab=audit">
+                  <div className="bg-[#3d9071] bg-opacity-10 backdrop-blur-sm rounded-xl p-4 shadow-md hover:bg-opacity-20 transition-all cursor-pointer">
+                    <div className="text-3xl mb-2">✅</div>
+                    <p className="font-semibold text-white text-sm">
+                      Electronic Audit Form
+                    </p>
+                    <p className="text-xs text-white opacity-70 mt-1">
+                      Simple & fast
+                    </p>
+                  </div>
+                </Link>
+                <Link href="/challenges/solutions?tab=reports">
+                  <div className="bg-[#3d9071] bg-opacity-10 backdrop-blur-sm rounded-xl p-4 shadow-md hover:bg-opacity-20 transition-all cursor-pointer">
+                    <div className="text-3xl mb-2">📈</div>
+                    <p className="font-semibold text-white text-sm">
+                      Auto-Generated Reports
+                    </p>
+                    <p className="text-xs text-white opacity-70 mt-1">
+                      Instant insights
+                    </p>
+                  </div>
+                </Link>
+                <Link href="/challenges/solutions?tab=alerts">
+                  <div className="bg-[#3d9071] bg-opacity-10 backdrop-blur-sm rounded-xl p-4 shadow-md hover:bg-opacity-20 transition-all cursor-pointer">
+                    <div className="text-3xl mb-2">🔔</div>
+                    <p className="font-semibold text-white text-sm">
+                      Low Performance Alerts
+                    </p>
+                    <p className="text-xs text-white opacity-70 mt-1">
+                      Proactive monitoring
+                    </p>
+                  </div>
+                </Link>
               </div>
             </div>
           </div>

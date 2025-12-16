@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { apiCall } from "@/lib/api";
 
 export default function PoliciesPage() {
   const router = useRouter();
@@ -87,16 +88,8 @@ export default function PoliciesPage() {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:4000/api/policy/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData),
-      });
 
-      const data = await response.json();
+      const data = await apiCall("/api/policy/create");
 
       if (data.success) {
         setMessage({ text: "Policy created successfully!", type: "success" });

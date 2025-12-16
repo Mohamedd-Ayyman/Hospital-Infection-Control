@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { apiCall } from "@/lib/api";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -40,16 +41,7 @@ export default function DashboardPage() {
       }
 
       try {
-        const response = await fetch(
-          "http://localhost:4000/api/user/get-logged-in",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        const data = await response.json();
+        const data = await apiCall("/api/user/get-logged-in");
         if (data.success) {
           setUser(data.data);
           if (data.data.role === "Admin") {
