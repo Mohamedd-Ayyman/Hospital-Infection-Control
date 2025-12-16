@@ -41,19 +41,6 @@ export default function RootLayout({ children }) {
             <div className="flex justify-end items-center relative">
               <div className="flex mr-4 items-center">
                 <Link
-                  href="/framework"
-                  className="flex items-center relative cursor-pointer whitespace-nowrap inline-block py-2 px-3 hover:bg-gray-200 hover:text-black rounded-full"
-                >
-                  FRAMEWORK
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex-initial">
-            <div className="flex justify-end items-center relative">
-              <div className="flex mr-4 items-center">
-                <Link
                   href="/standard-operating-procedures"
                   className="flex items-center relative cursor-pointer whitespace-nowrap inline-block py-2 px-3 hover:bg-gray-200 hover:text-black rounded-full"
                 >
@@ -67,36 +54,10 @@ export default function RootLayout({ children }) {
             <div className="flex justify-end items-center relative">
               <div className="flex mr-4 items-center">
                 <Link
-                  href="/dashboard"
-                  className="flex items-center relative cursor-pointer whitespace-nowrap inline-block py-2 px-3 hover:bg-gray-200 hover:text-black rounded-full"
-                >
-                  DASHBOARD
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex-initial">
-            <div className="flex justify-end items-center relative">
-              <div className="flex mr-4 items-center">
-                <Link
                   href="/challenges"
                   className="flex items-center relative cursor-pointer whitespace-nowrap inline-block py-2 px-3 hover:bg-gray-200 hover:text-black rounded-full"
                 >
                   CHALLENGES
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex-initial">
-            <div className="flex justify-end items-center relative">
-              <div className="flex mr-4 items-center">
-                <Link
-                  href="/document-control"
-                  className="flex items-center relative cursor-pointer whitespace-nowrap inline-block py-2 px-3 hover:bg-gray-200 hover:text-black rounded-full"
-                >
-                  DOCUMENT CONTROL
                 </Link>
               </div>
             </div>
