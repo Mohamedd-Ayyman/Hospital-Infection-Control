@@ -1,9 +1,7 @@
 import dotenv from "dotenv";
-dotenv.config({ path: "./config.env" });
-
 import mongoose from "mongoose";
 
-mongoose.connect(process.env.CONN_STRING);
+dotenv.config({ path: "./config.env" });
 
 const connectDB = async () => {
   try {
@@ -19,13 +17,18 @@ const connectDB = async () => {
   }
 };
 
-connectDB();
+const db = mongoose.connection;
+
 db.on("connected", () => {
-  console.log("DB connection successful!");
+  console.log("Mongoose default connection is open");
 });
 
-db.on("error", () => {
-  console.log("DB connection failed!");
+db.on("error", (err) => {
+  console.error("Mongoose default connection error:", err);
 });
 
-export default db;
+db.on("disconnected", () => {
+  console.log("Mongoose default connection is disconnected");
+});
+
+export { connectDB, db };
