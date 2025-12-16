@@ -46,18 +46,9 @@ export default function PoliciesPage() {
     }
 
     try {
-      const [userRes, policiesRes] = await Promise.all([
-        fetch("http://localhost:4000/api/user/get-logged-in", {
-          headers: { Authorization: `Bearer ${token}` },
-        }),
-        fetch("http://localhost:4000/api/policy/get-all", {
-          headers: { Authorization: `Bearer ${token}` },
-        }),
-      ]);
-
       const [userData, policiesData] = await Promise.all([
-        userRes.json(),
-        policiesRes.json(),
+        apiCall("/api/user/get-logged-in"),
+        apiCall("/api/policy/get-all"),
       ]);
 
       if (userData.success) {

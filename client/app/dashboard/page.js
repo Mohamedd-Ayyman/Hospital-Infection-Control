@@ -45,7 +45,7 @@ export default function DashboardPage() {
         if (data.success) {
           setUser(data.data);
           if (data.data.role === "Admin") {
-            await fetchAdminStats(token);
+            await fetchAdminStats();
           }
         } else {
           router.push("/login");
@@ -61,28 +61,14 @@ export default function DashboardPage() {
     fetchUserData();
   }, [router]);
 
-  const fetchAdminStats = async (token) => {
+  const fetchAdminStats = async () => {
     try {
-      const [auditsRes, reportsRes, usersRes, policiesRes] = await Promise.all([
-        fetch("http://localhost:4000/api/audit/get-all", {
-          headers: { Authorization: `Bearer ${token}` },
-        }),
-        fetch("http://localhost:4000/api/infection/get-all", {
-          headers: { Authorization: `Bearer ${token}` },
-        }),
-        fetch("http://localhost:4000/api/user/pending-users", {
-          headers: { Authorization: `Bearer ${token}` },
-        }),
-        fetch("http://localhost:4000/api/policy/get-all", {
-          headers: { Authorization: `Bearer ${token}` },
-        }),
-      ]);
-
+      // Updated to use apiCall instead of fetch
       const [audits, reports, users, policies] = await Promise.all([
-        auditsRes.json(),
-        reportsRes.json(),
-        usersRes.json(),
-        policiesRes.json(),
+        apiCall("/api/audit/get-all"),
+        apiCall("/api/infection/get-all"),
+        apiCall("/api/user/pending-users"),
+        apiCall("/api/policy/get-all"),
       ]);
 
       setStats({

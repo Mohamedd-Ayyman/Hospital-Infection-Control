@@ -41,18 +41,9 @@ export default function UserManagementPage() {
     }
 
     try {
-      const [allUsersRes, pendingUsersRes] = await Promise.all([
-        fetch("http://localhost:4000/api/user/get-all-users", {
-          headers: { Authorization: `Bearer ${token}` },
-        }),
-        fetch("http://localhost:4000/api/user/pending-users", {
-          headers: { Authorization: `Bearer ${token}` },
-        }),
-      ]);
-
       const [allUsersData, pendingUsersData] = await Promise.all([
-        allUsersRes.json(),
-        pendingUsersRes.json(),
+        apiCall("/api/user/get-all-users"),
+        apiCall("/api/user/pending-users"),
       ]);
 
       if (allUsersData.success) {

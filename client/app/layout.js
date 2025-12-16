@@ -3,8 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import "./globals.css";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+import { apiCall } from "@/lib/api";
 
 export default function RootLayout({ children }) {
   const [user, setUser] = useState(null);
@@ -22,13 +21,8 @@ export default function RootLayout({ children }) {
       }
 
       try {
-        const response = await fetch(`${API_URL}/api/user/get-logged-in`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const data = await apiCall("/api/user/get-logged-in");
 
-        const data = await response.json();
         if (data.success) {
           setUser(data.data);
         } else {
