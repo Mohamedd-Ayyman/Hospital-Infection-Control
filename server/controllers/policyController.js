@@ -45,4 +45,34 @@ router.get("/get-all", authMiddleware, async (req, res) => {
   }
 });
 
+router.delete("/delete-policy/:id", authMiddleware, async (req, res) => {
+  try {
+    if (req.user.role !== "Admin") {
+      return res.status(403).send({
+        message: "Access denied",
+        success: false,
+      });
+    }
+
+    const policy = await Policy.findByIdAndDelete(req.params.id);
+
+    if (!policy) {
+      return res.status(404).send({
+        message: "Policy not found",
+        success: false,
+      });
+    }
+
+    res.send({
+      message: "Policy deleted successfully",
+      success: true,
+    });
+  } catch (error) {
+    res.status(400).send({
+      message: error.message,
+      success: false,
+    });
+  }
+});
+
 export default router;
