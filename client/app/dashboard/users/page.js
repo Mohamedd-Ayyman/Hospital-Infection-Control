@@ -11,6 +11,7 @@ export default function UserManagementPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("pending");
   const [message, setMessage] = useState({ text: "", type: "" });
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
 
   useEffect(() => {
     const elements = contentRef.current?.querySelectorAll(".fadeUp");
@@ -85,6 +86,25 @@ export default function UserManagementPage() {
     }
   };
 
+  const handleDeleteUser = async (userId) => {
+    try {
+      const data = await apiCall(`/api/user/delete-user/${userId}`, {
+        method: "DELETE",
+      });
+
+      if (data.success) {
+        setMessage({ text: "User deleted successfully!", type: "success" });
+        setDeleteConfirm(null);
+        fetchUsers();
+        setTimeout(() => setMessage({ text: "", type: "" }), 3000);
+      } else {
+        setMessage({ text: data.message, type: "error" });
+      }
+    } catch (error) {
+      setMessage({ text: "Error deleting user", type: "error" });
+    }
+  };
+
   const getRoleBadgeColor = (role) => {
     switch (role) {
       case "Admin":
@@ -116,6 +136,38 @@ export default function UserManagementPage() {
         <div className="absolute top-40 right-10 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-75"></div>
         <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-green-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-150"></div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-[#2B624E] bg-opacity-90 backdrop-blur-lg rounded-3xl p-8 max-w-md mx-4 border-2 border-red-400 border-opacity-30">
+            <h3 className="text-2xl font-bold text-white mb-4">
+              Confirm Delete
+            </h3>
+            <p className="text-white mb-6">
+              Are you sure you want to delete user{" "}
+              <span className="font-bold text-red-400">
+                {deleteConfirm.firstname} {deleteConfirm.lastname}
+              </span>
+              ? This action cannot be undone.
+            </p>
+            <div className="flex gap-4">
+              <button
+                onClick={() => handleDeleteUser(deleteConfirm._id)}
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-semibold hover:from-red-600 hover:to-red-700 transition-all"
+              >
+                Delete
+              </button>
+              <button
+                onClick={() => setDeleteConfirm(null)}
+                className="flex-1 px-6 py-3 bg-white bg-opacity-10 text-white rounded-xl font-semibold hover:bg-opacity-20 transition-all"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="relative z-10 px-4 py-16" ref={contentRef}>
         <div className="max-w-7xl mx-auto">
@@ -159,7 +211,7 @@ export default function UserManagementPage() {
                 className={`px-8 py-4 rounded-full font-semibold text-lg transition-all ${
                   activeTab === "pending"
                     ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg"
-                    : "bg-white bg-opacity-10 text-black hover:bg-opacity-20"
+                    : "bg-white bg-opacity-10 text-white hover:bg-opacity-20"
                 }`}
               >
                 Pending Approvals ({pendingUsers.length})
@@ -169,7 +221,7 @@ export default function UserManagementPage() {
                 className={`px-8 py-4 rounded-full font-semibold text-lg transition-all ${
                   activeTab === "all"
                     ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
-                    : "bg-white bg-opacity-10 text-black hover:bg-opacity-20"
+                    : "bg-white bg-opacity-10 text-white hover:bg-opacity-20"
                 }`}
               >
                 All Users ({allUsers.length})
@@ -215,23 +267,31 @@ export default function UserManagementPage() {
                                 <span
                                   className={`px-3 py-1 text-xs ${getRoleBadgeColor(
                                     user.role
-                                  )}  bg-opacity-20 text-white rounded-full border border-opacity-30 font-semibold`}
+                                  )} bg-opacity-20 text-white rounded-full border border-opacity-30 font-semibold`}
                                 >
                                   {user.role}
                                 </span>
-                                <span className="px-3 py-1 text-xs bg-white bg-opacity-10 text-black rounded-full">
+                                <span className="px-3 py-1 text-xs bg-white bg-opacity-10 text-white rounded-full">
                                   {user.department}
                                 </span>
                               </div>
                             </div>
                           </div>
 
-                          <button
-                            onClick={() => handleApproveUser(user._id)}
-                            className="px-6 py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-xl font-semibold hover:from-green-600 hover:to-teal-600 transition-all shadow-lg"
-                          >
-                            Approve User
-                          </button>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => handleApproveUser(user._id)}
+                              className="px-6 py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-xl font-semibold hover:from-green-600 hover:to-teal-600 transition-all shadow-lg"
+                            >
+                              Approve
+                            </button>
+                            <button
+                              onClick={() => setDeleteConfirm(user)}
+                              className="px-6 py-3 bg-red-500 bg-opacity-20 text-white rounded-xl font-semibold hover:bg-opacity-30 transition-all border border-red-400 border-opacity-30"
+                            >
+                              Delete
+                            </button>
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -275,25 +335,38 @@ export default function UserManagementPage() {
                                 {user.role}
                               </span>
                               {user.department && (
-                                <span className="px-3 py-1 text-xs bg-white bg-opacity-10 text-black rounded-full">
+                                <span className="px-3 py-1 text-xs bg-white bg-opacity-10 text-white rounded-full">
                                   {user.department}
                                 </span>
                               )}
-                              <span
-                                className={`px-3 py-1 text-xs ${
-                                  user.isApproved
-                                    ? "bg-green-500 text-black"
-                                    : "bg-yellow-500 text-black"
-                                } bg-opacity-20 rounded-full border-white border-1 border-opacity-30 font-semibold`}
-                              >
-                                {user.isApproved ? "Approved" : "Pending"}
-                              </span>
+                              {user.role !== "Admin" && (
+                                <span
+                                  className={`px-3 py-1 text-xs ${
+                                    user.isApproved
+                                      ? "bg-green-500 text-white"
+                                      : "bg-yellow-500 text-white"
+                                  } bg-opacity-20 rounded-full border-white border-1 border-opacity-30 font-semibold`}
+                                >
+                                  {user.isApproved ? "Approved" : "Pending"}
+                                </span>
+                              )}
                             </div>
                           </div>
                         </div>
 
-                        <div className="text-sm text-white opacity-70">
-                          Joined {new Date(user.createdAt).toLocaleDateString()}
+                        <div className="flex items-center gap-4">
+                          <div className="text-sm text-white opacity-70">
+                            Joined{" "}
+                            {new Date(user.createdAt).toLocaleDateString()}
+                          </div>
+                          {user.role !== "Admin" && (
+                            <button
+                              onClick={() => setDeleteConfirm(user)}
+                              className="px-4 py-2 bg-red-500 bg-opacity-20 text-white rounded-lg font-semibold hover:bg-opacity-30 transition-all border border-red-400 border-opacity-30"
+                            >
+                              Delete
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>

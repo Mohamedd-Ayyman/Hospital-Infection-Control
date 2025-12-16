@@ -1,12 +1,15 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { apiCall } from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 export default function AuditPage() {
+  const router = useRouter();
   const [audits, setAudits] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [policies, setPolicies] = useState([]);
+  const [user, setUser] = useState(null);
   const contentRef = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -40,40 +43,41 @@ export default function AuditPage() {
   }, []);
 
   useEffect(() => {
-    fetchAudits();
-    fetchPolicies();
+    fetchData();
   }, []);
 
-  const fetchAudits = async () => {
+  const fetchData = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+
     try {
       setLoading(true);
-      const token = localStorage.getItem("token");
 
-      const data = await apiCall("/api/audits/get-all", {
-        method: "GET",
-      });
+      const [userData, auditsData, policiesData] = await Promise.all([
+        apiCall("/api/user/get-logged-in"),
+        apiCall("/api/audit/get-all"),
+        apiCall("/api/policy/get-all"),
+      ]);
 
-      if (data.success) {
-        setAudits(data.data);
-        calculateStats(data.data);
+      if (userData.success) {
+        setUser(userData.data);
+      }
+
+      if (auditsData.success) {
+        setAudits(auditsData.data);
+        calculateStats(auditsData.data);
+      }
+
+      if (policiesData.success) {
+        setPolicies(policiesData.data);
       }
     } catch (error) {
-      console.error("Error fetching audits:", error);
+      console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fetchPolicies = async () => {
-    try {
-      const token = localStorage.getItem("token");
-
-      const data = await apiCall("/api/policies/get-all");
-      if (data.success) {
-        setPolicies(data.data);
-      }
-    } catch (error) {
-      console.error("Error fetching policies:", error);
     }
   };
 
@@ -110,9 +114,7 @@ export default function AuditPage() {
 
   const handleSubmit = async () => {
     try {
-      const token = localStorage.getItem("token");
-
-      const data = await apiCall("/api/audits/create", {
+      const data = await apiCall("/api/audit/create", {
         method: "POST",
         body: JSON.stringify(formData),
       });
@@ -126,7 +128,7 @@ export default function AuditPage() {
           complianceScore: "",
           policy: "",
         });
-        fetchAudits();
+        fetchData();
       } else {
         alert(data.message || "Failed to create audit");
       }
@@ -147,6 +149,17 @@ export default function AuditPage() {
     if (score >= 60) return { text: "Good", color: "bg-yellow-500" };
     return { text: "Needs Improvement", color: "bg-red-500" };
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-teal-900 to-green-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white text-xl">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 via-teal-900 to-green-900 relative overflow-hidden">
@@ -177,12 +190,14 @@ export default function AuditPage() {
                   improvement
                 </p>
               </div>
-              <button
-                onClick={() => setShowCreateForm(!showCreateForm)}
-                className="px-8 py-4 bg-gradient-to-r from-teal-500 to-green-500 text-white rounded-full font-semibold text-lg hover:from-teal-600 hover:to-green-600 transform hover:scale-105 transition-all duration-300 shadow-xl"
-              >
-                {showCreateForm ? "Cancel" : "+ New Audit"}
-              </button>
+              {user?.role === "Admin" && (
+                <button
+                  onClick={() => setShowCreateForm(!showCreateForm)}
+                  className="px-8 py-4 bg-gradient-to-r from-teal-500 to-green-500 text-white rounded-full font-semibold text-lg hover:from-teal-600 hover:to-green-600 transform hover:scale-105 transition-all duration-300 shadow-xl"
+                >
+                  {showCreateForm ? "Cancel" : "+ New Audit"}
+                </button>
+              )}
             </div>
           </div>
 
@@ -250,7 +265,7 @@ export default function AuditPage() {
             </div>
           </div>
 
-          {showCreateForm && (
+          {showCreateForm && user?.role === "Admin" && (
             <div className="fadeUp bg-[#2B624E] bg-opacity-20 backdrop-blur-lg rounded-3xl p-8 border border-white border-opacity-20 mb-12">
               <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
                 <span className="text-green-400">+</span> Create New Audit
@@ -349,12 +364,7 @@ export default function AuditPage() {
                 <span className="text-green-400">📋</span> Audit Records
               </h2>
 
-              {loading ? (
-                <div className="text-center py-12">
-                  <div className="inline-block w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <p className="text-white mt-4">Loading audits...</p>
-                </div>
-              ) : audits.length === 0 ? (
+              {audits.length === 0 ? (
                 <div className="text-center py-12">
                   <div className="text-6xl mb-4">📭</div>
                   <p className="text-white text-xl">No audits found</p>

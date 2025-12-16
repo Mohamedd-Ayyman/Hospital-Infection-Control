@@ -189,12 +189,6 @@ export default function DashboardPage() {
                   {user?.role} • {user?.department || "Administration"}
                 </p>
               </div>
-              <button
-                onClick={handleLogout}
-                className="px-6 py-3 bg-red-500 bg-opacity-20 backdrop-blur-sm text-white border-2 border-red-400 border-opacity-30 rounded-full font-semibold hover:bg-opacity-30 transition-all"
-              >
-                Logout
-              </button>
             </div>
           </div>
 

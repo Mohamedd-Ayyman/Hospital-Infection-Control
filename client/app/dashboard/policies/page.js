@@ -10,6 +10,7 @@ export default function PoliciesPage() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
     version: "",
@@ -87,23 +88,41 @@ export default function PoliciesPage() {
     }
 
     try {
-      const token = localStorage.getItem("token");
-
       const data = await apiCall("/api/policy/create", {
         method: "POST",
         body: JSON.stringify(formData),
       });
-      
+
       if (data.success) {
         setMessage({ text: "Policy created successfully!", type: "success" });
         setShowCreateForm(false);
         setFormData({ title: "", version: "", documentURL: "" });
         fetchData();
+        setTimeout(() => setMessage({ text: "", type: "" }), 3000);
       } else {
         setMessage({ text: data.message, type: "error" });
       }
     } catch (error) {
       setMessage({ text: "Error creating policy", type: "error" });
+    }
+  };
+
+  const handleDeletePolicy = async (policyId) => {
+    try {
+      const data = await apiCall(`/api/policy/delete-policy/${policyId}`, {
+        method: "DELETE",
+      });
+
+      if (data.success) {
+        setMessage({ text: "Policy deleted successfully!", type: "success" });
+        setDeleteConfirm(null);
+        fetchData();
+        setTimeout(() => setMessage({ text: "", type: "" }), 3000);
+      } else {
+        setMessage({ text: data.message, type: "error" });
+      }
+    } catch (error) {
+      setMessage({ text: "Error deleting policy", type: "error" });
     }
   };
 
@@ -125,6 +144,38 @@ export default function PoliciesPage() {
         <div className="absolute top-40 right-10 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-75"></div>
         <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-green-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-150"></div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-[#2B624E] bg-opacity-90 backdrop-blur-lg rounded-3xl p-8 max-w-md mx-4 border-2 border-red-400 border-opacity-30">
+            <h3 className="text-2xl font-bold text-white mb-4">
+              Confirm Delete
+            </h3>
+            <p className="text-white mb-6">
+              Are you sure you want to delete policy{" "}
+              <span className="font-bold text-red-400">
+                {deleteConfirm.title}
+              </span>
+              ? This action cannot be undone.
+            </p>
+            <div className="flex gap-4">
+              <button
+                onClick={() => handleDeletePolicy(deleteConfirm._id)}
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-semibold hover:from-red-600 hover:to-red-700 transition-all"
+              >
+                Delete
+              </button>
+              <button
+                onClick={() => setDeleteConfirm(null)}
+                className="flex-1 px-6 py-3 bg-white bg-opacity-10 text-white rounded-xl font-semibold hover:bg-opacity-20 transition-all"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="relative z-10 px-4 py-16" ref={contentRef}>
         <div className="max-w-7xl mx-auto">
@@ -252,7 +303,7 @@ export default function PoliciesPage() {
                       className="bg-[#3d9071] bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 border border-white border-opacity-10 hover:bg-opacity-20 transition-all"
                     >
                       <div className="flex flex-wrap items-center justify-between gap-4">
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-4 flex-1">
                           <div className="w-16 h-16 bg-gradient-to-br from-teal-400 to-green-500 rounded-xl flex items-center justify-center text-2xl">
                             📄
                           </div>
@@ -267,14 +318,24 @@ export default function PoliciesPage() {
                           </div>
                         </div>
 
-                        <a
-                          href={policy.documentURL}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="px-6 py-3 bg-white bg-opacity-10 backdrop-blur-sm text-white rounded-xl font-semibold hover:bg-opacity-20 transition-all"
-                        >
-                          View Document →
-                        </a>
+                        <div className="flex items-center gap-2">
+                          <a
+                            href={policy.documentURL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-6 py-3 bg-white bg-opacity-10 backdrop-blur-sm text-white rounded-xl font-semibold hover:bg-opacity-20 transition-all"
+                          >
+                            View Document →
+                          </a>
+                          {user?.role === "Admin" && (
+                            <button
+                              onClick={() => setDeleteConfirm(policy)}
+                              className="px-4 py-3 bg-red-500 bg-opacity-20 text-white rounded-xl font-semibold hover:bg-opacity-30 transition-all border border-red-400 border-opacity-30"
+                            >
+                              Delete
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   ))}
