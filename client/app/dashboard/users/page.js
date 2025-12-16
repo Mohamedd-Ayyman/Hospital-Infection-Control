@@ -151,7 +151,7 @@ export default function UserManagementPage() {
               </button>
               <button
                 onClick={() => setDeleteConfirm(null)}
-                className="flex-1 px-6 py-3 bg-white bg-opacity-10 text-white rounded-xl font-semibold hover:bg-opacity-20 transition-all"
+                className="flex-1 px-6 py-3 bg-white bg-opacity-10 text-black rounded-xl font-semibold hover:bg-opacity-20 transition-all"
               >
                 Cancel
               </button>
@@ -212,7 +212,7 @@ export default function UserManagementPage() {
                 className={`px-8 py-4 rounded-full font-semibold text-lg transition-all ${
                   activeTab === "all"
                     ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
-                    : "bg-white bg-opacity-10 text-white hover:bg-opacity-20"
+                    : "bg-white bg-opacity-10 text-black hover:bg-opacity-20"
                 }`}
               >
                 All Users ({allUsers.length})
@@ -258,7 +258,7 @@ export default function UserManagementPage() {
                                 <span
                                   className={`px-3 py-1 text-xs ${getRoleBadgeColor(
                                     user.role
-                                  )} bg-opacity-20 text-white rounded-full border border-opacity-30 font-semibold`}
+                                  )} bg-opacity-20 text-black rounded-full border border-opacity-30 font-semibold`}
                                 >
                                   {user.role}
                                 </span>
