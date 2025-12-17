@@ -128,7 +128,6 @@ export default function UserManagementPage() {
         <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-green-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-150"></div>
       </div>
 
-      {/* Delete Confirmation Modal */}
       {deleteConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-[#2B624E] bg-opacity-90 backdrop-blur-lg rounded-3xl p-8 max-w-md mx-4 border-2 border-red-400 border-opacity-30">
@@ -160,21 +159,24 @@ export default function UserManagementPage() {
         </div>
       )}
 
-      <div className="relative z-10 px-4 py-16" ref={contentRef}>
+      <div
+        className="relative z-10 px-4 sm:px-6 py-8 sm:py-12 md:py-16"
+        ref={contentRef}
+      >
         <div className="max-w-7xl mx-auto">
-          <div className="fadeUp mb-12">
+          <div className="fadeUp mb-8 sm:mb-12">
             <div className="mb-4">
-              <div className="w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center shadow-2xl transform hover:scale-110 transition-transform duration-300">
-                <span className="text-4xl">👥</span>
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center shadow-2xl transform hover:scale-110 transition-transform duration-300">
+                <span className="text-3xl sm:text-4xl">👥</span>
               </div>
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 sm:mb-4 leading-tight">
               User{" "}
               <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent">
                 Management
               </span>
             </h1>
-            <p className="text-xl text-white opacity-90">
+            <p className="text-base sm:text-lg md:text-xl text-white opacity-90">
               Manage hospital staff and approve new registrations
             </p>
           </div>
@@ -202,7 +204,7 @@ export default function UserManagementPage() {
                 className={`px-8 py-4 rounded-full font-semibold text-lg transition-all ${
                   activeTab === "pending"
                     ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg"
-                    : "bg-white bg-opacity-10 text-white hover:bg-opacity-20"
+                    : "bg-white bg-opacity-10 text-black hover:bg-opacity-20"
                 }`}
               >
                 Pending Approvals ({pendingUsers.length})
