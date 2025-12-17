@@ -13,8 +13,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://hospital-infection-control-production.up.railway.app",
-      "https://hospital-infection-control.vercel.app/",
+      "https://hospital-infection-control.vercel.app",
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
