@@ -260,11 +260,11 @@ export default function UserManagementPage() {
                                 <span
                                   className={`px-3 py-1 text-xs ${getRoleBadgeColor(
                                     user.role
-                                  )} bg-opacity-20 text-black rounded-full border border-opacity-30 font-semibold`}
+                                  )} bg-opacity-20 text-white rounded-full border border-opacity-30 font-semibold`}
                                 >
                                   {user.role}
                                 </span>
-                                <span className="px-3 py-1 text-xs bg-white bg-opacity-10 text-white rounded-full">
+                                <span className="px-3 py-1 text-xs bg-white bg-opacity-10 text-black rounded-full">
                                   {user.department}
                                 </span>
                               </div>
@@ -296,8 +296,8 @@ export default function UserManagementPage() {
 
           {activeTab === "all" && (
             <div className="fadeUp">
-              <div className="bg-[#2B624E] bg-opacity-20 backdrop-blur-lg rounded-3xl p-8 border border-white border-opacity-20">
-                <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+              <div className="bg-[#2B624E] bg-opacity-20 backdrop-blur-lg rounded-3xl p-4 sm:p-8 border border-white border-opacity-20">
+                <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-3">
                   <span className="text-purple-400">👥</span> All Users
                 </h2>
 
@@ -305,36 +305,36 @@ export default function UserManagementPage() {
                   {allUsers.map((user) => (
                     <div
                       key={user._id}
-                      className="bg-[#3d9071] bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 border border-white border-opacity-10 hover:bg-opacity-20 transition-all"
+                      className="bg-[#3d9071] bg-opacity-10 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white border-opacity-10 hover:bg-opacity-20 transition-all"
                     >
-                      <div className="flex flex-wrap items-center justify-between gap-4">
-                        <div className="flex items-center gap-4">
-                          <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-500 rounded-xl flex items-center justify-center text-2xl">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div className="flex items-start sm:items-center gap-3 sm:gap-4 flex-1">
+                          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-purple-400 to-pink-500 rounded-xl flex items-center justify-center text-xl sm:text-2xl flex-shrink-0">
                             👤
                           </div>
-                          <div>
-                            <h3 className="text-xl font-bold text-white mb-1">
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-lg sm:text-xl font-bold text-white mb-1 truncate">
                               {user.firstname} {user.lastname}
                             </h3>
-                            <p className="text-sm text-white opacity-90">
+                            <p className="text-xs sm:text-sm text-white opacity-90 truncate">
                               {user.email}
                             </p>
-                            <div className="flex items-center gap-2 mt-2">
+                            <div className="flex flex-wrap items-center gap-2 mt-2">
                               <span
-                                className={`px-3 py-1 text-xs ${getRoleBadgeColor(
+                                className={`px-2 sm:px-3 py-1 text-xs ${getRoleBadgeColor(
                                   user.role
                                 )} bg-opacity-20 text-white rounded-full border border-opacity-30 font-semibold`}
                               >
                                 {user.role}
                               </span>
                               {user.department && (
-                                <span className="px-3 py-1 text-xs bg-white bg-opacity-10 text-white rounded-full">
+                                <span className="px-2 sm:px-3 py-1 text-xs bg-white bg-opacity-10 text-black rounded-full">
                                   {user.department}
                                 </span>
                               )}
                               {user.role !== "Admin" && (
                                 <span
-                                  className={`px-3 py-1 text-xs ${
+                                  className={`px-2 sm:px-3 py-1 text-xs ${
                                     user.isApproved
                                       ? "bg-green-500 text-white"
                                       : "bg-yellow-500 text-white"
@@ -347,15 +347,15 @@ export default function UserManagementPage() {
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-4">
-                          <div className="text-sm text-white opacity-70">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 sm:flex-shrink-0">
+                          <div className="text-xs sm:text-sm text-white opacity-70">
                             Joined{" "}
                             {new Date(user.createdAt).toLocaleDateString()}
                           </div>
                           {user.role !== "Admin" && (
                             <button
                               onClick={() => setDeleteConfirm(user)}
-                              className="px-4 py-2 bg-red-500 bg-opacity-20 text-white rounded-lg font-semibold hover:bg-opacity-30 transition-all border border-red-400 border-opacity-30"
+                              className="w-full sm:w-auto px-4 py-2 bg-red-500 bg-opacity-20 text-white rounded-lg text-sm font-semibold hover:bg-opacity-30 transition-all border border-red-400 border-opacity-30"
                             >
                               Delete
                             </button>

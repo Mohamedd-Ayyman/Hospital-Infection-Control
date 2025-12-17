@@ -258,8 +258,7 @@ export default function RootLayout({ children }) {
             <footer className="flex flex-col items-center justify-center w-full py-10 bg-gradient-to-b from-blue-900 via-teal-900 to-green-900  text-white/70">
               <p className="mt-4 text-center">
                 Copyright © {new Date().getFullYear()}{" "}
-                <a href="https://prebuiltui.com">Infection Control 🏥</a>. All
-                rights reservered.
+                <a>Infection Control 🏥</a>. All rights reservered.
               </p>
               <div className="flex items-center gap-4 mt-5">
                 <a

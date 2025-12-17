@@ -11,6 +11,8 @@ export default function AuditPage() {
   const [policies, setPolicies] = useState([]);
   const [user, setUser] = useState(null);
   const contentRef = useRef(null);
+  const createFormRef = useRef(null);
+  const [message, setMessage] = useState({ text: "", type: "" });
 
   const [formData, setFormData] = useState({
     auditType: "",
@@ -45,6 +47,15 @@ export default function AuditPage() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (showCreateForm && createFormRef.current) {
+      createFormRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [showCreateForm]);
 
   const fetchData = async () => {
     const token = localStorage.getItem("token");
@@ -120,7 +131,10 @@ export default function AuditPage() {
       });
 
       if (data.success) {
-        alert("Audit created successfully!");
+        setMessage({
+          text: "Audit created successfully!",
+          type: "success",
+        });
         setShowCreateForm(false);
         setFormData({
           auditType: "",
@@ -130,11 +144,14 @@ export default function AuditPage() {
         });
         fetchData();
       } else {
-        alert(data.message || "Failed to create audit");
+        setMessage({
+          text: data.message || "Failed to create audit",
+          type: "error",
+        });
       }
     } catch (error) {
       console.error("Error creating audit:", error);
-      alert("Error creating audit");
+      setMessage("Error creating audit");
     }
   };
 
@@ -142,6 +159,12 @@ export default function AuditPage() {
     if (score >= 80) return "text-green-400";
     if (score >= 60) return "text-yellow-400";
     return "text-red-400";
+  };
+
+  const getComplianceBarColor = (score) => {
+    if (score >= 80) return "bg-green-500";
+    if (score >= 60) return "bg-yellow-500";
+    return "bg-red-500";
   };
 
   const getComplianceBadge = (score) => {
@@ -200,6 +223,207 @@ export default function AuditPage() {
               )}
             </div>
           </div>
+          {message.text && (
+            <div className="fadeUp mb-8">
+              <div
+                className={`${
+                  message.type === "success"
+                    ? "bg-green-500 border-green-400"
+                    : "bg-red-500 border-red-400"
+                } bg-opacity-20 backdrop-blur-lg rounded-2xl p-4 border-2 border-opacity-30`}
+              >
+                <p className="text-white text-center font-medium">
+                  {message.text}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {showCreateForm && user?.role === "Admin" && (
+            <div
+              ref={createFormRef}
+              className="fadeUp bg-[#2B624E] bg-opacity-20 backdrop-blur-lg rounded-3xl p-8 border border-white border-opacity-20 mb-12"
+            >
+              <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                <span className="text-green-400">+</span> Create New Audit
+              </h2>
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-white mb-2 font-medium">
+                      Audit Type
+                    </label>
+                    <select
+                      name="auditType"
+                      value={formData.auditType}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 bg-[#3d9071] bg-opacity-20 border border-white border-opacity-30 rounded-xl text-white placeholder-white placeholder-opacity-50 focus:outline-none focus:border-teal-400"
+                    >
+                      <option value="">Select Audit Type</option>
+                      <option value="Hand Hygiene">Hand Hygiene</option>
+                      <option value="Environmental Cleaning">
+                        Environmental Cleaning
+                      </option>
+                      <option value="Sterilization">Sterilization</option>
+                      <option value="PPE Compliance">PPE Compliance</option>
+                      <option value="Waste Management">Waste Management</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-white mb-2 font-medium">
+                      Department
+                    </label>
+                    <select
+                      name="department"
+                      value={formData.department}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 bg-[#3d9071] bg-opacity-20 border border-white border-opacity-30 rounded-xl text-white placeholder-white placeholder-opacity-50 focus:outline-none focus:border-teal-400"
+                    >
+                      <option value="" disabled hidden>
+                        Select Department
+                      </option>
+                      <option value="ICU">ICU</option>
+                      <option value="Emergency">Emergency</option>
+                      <option value="Surgery">Surgery</option>
+                      <option value="Pediatrics">Pediatrics</option>
+                      <option value="General Ward">General Ward</option>
+                    </select>
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="block text-white mb-3 font-medium">
+                      Compliance Score:{" "}
+                      <span
+                        className={`text-2xl font-bold ${getComplianceColor(
+                          formData.complianceScore || 0
+                        )}`}
+                      >
+                        {formData.complianceScore || 0}%
+                      </span>
+                    </label>
+                    <div className="space-y-4">
+                      <input
+                        type="range"
+                        name="complianceScore"
+                        value={formData.complianceScore || 0}
+                        onChange={handleInputChange}
+                        min="0"
+                        max="100"
+                        className="w-full h-3 rounded-lg appearance-none cursor-pointer"
+                        style={{
+                          background: `linear-gradient(to right, 
+                            ${
+                              formData.complianceScore >= 80
+                                ? "#10b981"
+                                : formData.complianceScore >= 60
+                                ? "#eab308"
+                                : "#ef4444"
+                            } 0%, 
+                            ${
+                              formData.complianceScore >= 80
+                                ? "#10b981"
+                                : formData.complianceScore >= 60
+                                ? "#eab308"
+                                : "#ef4444"
+                            } ${formData.complianceScore}%, 
+                            rgba(255,255,255,0.1) ${formData.complianceScore}%, 
+                            rgba(255,255,255,0.1) 100%)`,
+                        }}
+                      />
+                      <div className="w-full h-4 bg-white bg-opacity-10 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full ${getComplianceBarColor(
+                            formData.complianceScore || 0
+                          )} transition-all duration-300 rounded-full flex items-center justify-end pr-2`}
+                          style={{ width: `${formData.complianceScore || 0}%` }}
+                        >
+                          {formData.complianceScore > 10 && (
+                            <span className="text-xs text-white font-bold">
+                              {formData.complianceScore}%
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setFormData({ ...formData, complianceScore: 25 })
+                          }
+                          className="px-4 py-2 bg-red-500 bg-opacity-20 border border-red-500 border-opacity-40 text-white rounded-lg text-sm hover:bg-opacity-30 transition-all"
+                        >
+                          Poor (25%)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setFormData({ ...formData, complianceScore: 50 })
+                          }
+                          className="px-4 py-2 bg-orange-500 bg-opacity-20 border border-orange-500 border-opacity-40 text-white rounded-lg text-sm hover:bg-opacity-30 transition-all"
+                        >
+                          Fair (50%)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setFormData({ ...formData, complianceScore: 70 })
+                          }
+                          className="px-4 py-2 bg-yellow-500 bg-opacity-20 border border-yellow-500 border-opacity-40 text-white rounded-lg text-sm hover:bg-opacity-30 transition-all"
+                        >
+                          Good (70%)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setFormData({ ...formData, complianceScore: 85 })
+                          }
+                          className="px-4 py-2 bg-green-500 bg-opacity-20 border border-green-500 border-opacity-40 text-white rounded-lg text-sm hover:bg-opacity-30 transition-all"
+                        >
+                          Very Good (85%)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setFormData({ ...formData, complianceScore: 100 })
+                          }
+                          className="px-4 py-2 bg-emerald-500 bg-opacity-20 border border-emerald-500 border-opacity-40 text-white rounded-lg text-sm hover:bg-opacity-30 transition-all"
+                        >
+                          Excellent (100%)
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="block text-white mb-2 font-medium">
+                      Related Policy
+                    </label>
+                    <select
+                      name="policy"
+                      value={formData.policy}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 bg-[#3d9071] bg-opacity-20 border border-white border-opacity-30 rounded-xl text-white placeholder-white placeholder-opacity-50 focus:outline-none focus:border-teal-400"
+                    >
+                      <option value="">Select Policy</option>
+                      {policies.map((policy) => (
+                        <option key={policy._id} value={policy._id}>
+                          {policy.title} (v{policy.version})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleSubmit}
+                  className="px-8 py-4 bg-gradient-to-r from-teal-500 to-green-500 text-white rounded-full font-semibold text-lg hover:from-teal-600 hover:to-green-600 transform hover:scale-105 transition-all duration-300 shadow-xl"
+                >
+                  Create Audit
+                </button>
+              </div>
+            </div>
+          )}
 
           <div className="fadeUp grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             <div className="bg-[#2B624E] bg-opacity-20 backdrop-blur-lg rounded-2xl p-6 border border-white border-opacity-20">
@@ -265,99 +489,6 @@ export default function AuditPage() {
             </div>
           </div>
 
-          {showCreateForm && user?.role === "Admin" && (
-            <div className="fadeUp bg-[#2B624E] bg-opacity-20 backdrop-blur-lg rounded-3xl p-8 border border-white border-opacity-20 mb-12">
-              <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
-                <span className="text-green-400">+</span> Create New Audit
-              </h2>
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-white mb-2 font-medium">
-                      Audit Type
-                    </label>
-                    <select
-                      name="auditType"
-                      value={formData.auditType}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-[#3d9071] bg-opacity-20 border border-white border-opacity-30 rounded-xl text-white placeholder-white placeholder-opacity-50 focus:outline-none focus:border-teal-400"
-                    >
-                      <option value="">Select Audit Type</option>
-                      <option value="Hand Hygiene">Hand Hygiene</option>
-                      <option value="Environmental Cleaning">
-                        Environmental Cleaning
-                      </option>
-                      <option value="Sterilization">Sterilization</option>
-                      <option value="PPE Compliance">PPE Compliance</option>
-                      <option value="Waste Management">Waste Management</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-white mb-2 font-medium">
-                      Department
-                    </label>
-                    <select
-                      name="department"
-                      value={formData.department}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-[#3d9071] bg-opacity-20 border border-white border-opacity-30 rounded-xl text-white placeholder-white placeholder-opacity-50 focus:outline-none focus:border-teal-400"
-                    >
-                      <option value="">Select Department</option>
-                      <option value="ICU">ICU</option>
-                      <option value="Emergency">Emergency</option>
-                      <option value="Surgery">Surgery</option>
-                      <option value="Pediatrics">Pediatrics</option>
-                      <option value="General Ward">General Ward</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-white mb-2 font-medium">
-                      Compliance Score (%)
-                    </label>
-                    <input
-                      type="number"
-                      name="complianceScore"
-                      value={formData.complianceScore}
-                      onChange={handleInputChange}
-                      min="0"
-                      max="100"
-                      className="w-full px-4 py-3 bg-[#3d9071] bg-opacity-20 border border-white border-opacity-30 rounded-xl text-white placeholder-white placeholder-opacity-50 focus:outline-none focus:border-teal-400"
-                      placeholder="Enter score (0-100)"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-white mb-2 font-medium">
-                      Related Policy
-                    </label>
-                    <select
-                      name="policy"
-                      value={formData.policy}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-[#3d9071] bg-opacity-20 border border-white border-opacity-30 rounded-xl text-white placeholder-white placeholder-opacity-50 focus:outline-none focus:border-teal-400"
-                    >
-                      <option value="">Select Policy</option>
-                      {policies.map((policy) => (
-                        <option key={policy._id} value={policy._id}>
-                          {policy.title} (v{policy.version})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <button
-                  onClick={handleSubmit}
-                  className="px-8 py-4 bg-gradient-to-r from-teal-500 to-green-500 text-white rounded-full font-semibold text-lg hover:from-teal-600 hover:to-green-600 transform hover:scale-105 transition-all duration-300 shadow-xl"
-                >
-                  Create Audit
-                </button>
-              </div>
-            </div>
-          )}
-
           <div className="fadeUp">
             <div className="bg-[#2B624E] bg-opacity-20 backdrop-blur-lg rounded-3xl p-8 border border-white border-opacity-20">
               <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
@@ -381,9 +512,9 @@ export default function AuditPage() {
                         key={audit._id}
                         className="bg-[#3d9071] bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 border border-white border-opacity-10 hover:bg-opacity-20 transition-all"
                       >
-                        <div className="flex flex-wrap items-center justify-between gap-4">
+                        <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
                           <div className="flex items-center gap-4">
-                            <div className="w-16 h-16 bg-gradient-to-br from-teal-400 to-green-500 rounded-xl flex items-center justify-center text-2xl">
+                            <div className="w-16 h-16 bg-gradient-to-br from-teal-400 to-green-500 rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
                               📋
                             </div>
                             <div>
@@ -403,21 +534,35 @@ export default function AuditPage() {
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-4">
-                            <div className="text-center">
-                              <p
-                                className={`text-4xl font-bold ${getComplianceColor(
-                                  audit.complianceScore
-                                )}`}
-                              >
-                                {audit.complianceScore}%
-                              </p>
-                              <span
-                                className={`px-3 py-1 text-xs ${badge.color} bg-opacity-20 text-white rounded-full`}
-                              >
-                                {badge.text}
-                              </span>
-                            </div>
+                          <div className="flex items-center gap-2">
+                            <span
+                              className={`px-3 py-1 text-xs ${badge.color} bg-opacity-20 text-white rounded-full whitespace-nowrap`}
+                            >
+                              {badge.text}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-white opacity-70">
+                              Compliance Score
+                            </span>
+                            <span
+                              className={`text-lg font-bold ${getComplianceColor(
+                                audit.complianceScore
+                              )}`}
+                            >
+                              {audit.complianceScore}%
+                            </span>
+                          </div>
+                          <div className="w-full h-3 bg-white bg-opacity-10 rounded-full overflow-hidden">
+                            <div
+                              className={`h-full ${getComplianceBarColor(
+                                audit.complianceScore
+                              )} transition-all duration-500 rounded-full`}
+                              style={{ width: `${audit.complianceScore}%` }}
+                            ></div>
                           </div>
                         </div>
 
