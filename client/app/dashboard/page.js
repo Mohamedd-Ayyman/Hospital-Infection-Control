@@ -285,9 +285,9 @@ export default function DashboardPage() {
                     View SOPs
                   </button>
                 </Link>
-                <Link href="/challenges">
-                  <button className="px-6 py-3 bg-transparent text-white border-2 border-white rounded-full font-semibold hover:bg-white hover:text-teal-900 transition-all">
-                    Case Studies
+                <Link href="/about/standards">
+                  <button className="px-6 py-3 bg-white text-teal-900 rounded-full font-semibold hover:bg-gray-100 transition-all">
+                    View Standards
                   </button>
                 </Link>
               </div>

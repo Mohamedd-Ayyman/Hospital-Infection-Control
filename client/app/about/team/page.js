@@ -110,14 +110,13 @@ export default function AboutTeamPage() {
           <div className="fadeUp text-center">
             <div className="bg-gradient-to-r from-pink-500 to-purple-500 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
               <div className="absolute -top-10 -right-10 w-32 h-32 bg-white opacity-10 rounded-full"></div>
-
               <h3 className="text-3xl font-bold text-white mb-4 relative z-10">
                 Liked our work?
               </h3>
 
-              <button className="px-10 py-4 bg-white text-purple-900 rounded-full text-xl font-bold shadow-xl transform hover:scale-105 transition-all duration-300 hover:shadow-2xl">
+              <div className="inline-block px-10 py-5 bg-white text-purple-900 rounded-full text-xl font-bold shadow-xl transform hover:scale-105 transition-all duration-300">
                 Give Us an A+ 🎓
-              </button>
+              </div>
             </div>
           </div>
         </div>

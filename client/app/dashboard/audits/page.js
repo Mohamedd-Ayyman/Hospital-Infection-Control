@@ -259,7 +259,9 @@ export default function AuditPage() {
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 bg-[#3d9071] bg-opacity-20 border border-white border-opacity-30 rounded-xl text-white placeholder-white placeholder-opacity-50 focus:outline-none focus:border-teal-400"
                     >
-                      <option value="">Select Audit Type</option>
+                      <option value="" disabled hidden>
+                        Select Audit Type
+                      </option>
                       <option value="Hand Hygiene">Hand Hygiene</option>
                       <option value="Environmental Cleaning">
                         Environmental Cleaning
@@ -405,7 +407,9 @@ export default function AuditPage() {
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 bg-[#3d9071] bg-opacity-20 border border-white border-opacity-30 rounded-xl text-white placeholder-white placeholder-opacity-50 focus:outline-none focus:border-teal-400"
                     >
-                      <option value="">Select Policy</option>
+                      <option value="" disabled hidden>
+                        Select Policy
+                      </option>
                       {policies.map((policy) => (
                         <option key={policy._id} value={policy._id}>
                           {policy.title} (v{policy.version})

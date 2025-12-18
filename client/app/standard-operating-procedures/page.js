@@ -202,7 +202,7 @@ export default function SOPPage() {
                 Ready to Implement These SOPs?
               </h3>
               <p className="text-teal-100 text-lg mb-6 opacity-90">
-                Download the complete documentation and training materials
+                Download the complete documentation as pdf
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 {isClient && (
@@ -212,14 +212,10 @@ export default function SOPPage() {
                     className="px-8 py-4 bg-white text-teal-900 rounded-full font-semibold text-lg hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-xl"
                   >
                     {({ loading }) =>
-                      loading ? "Preparing PDF..." : "Download SOPs (PDF)"
+                      loading ? "Preparing PDF..." : "Download SOPs"
                     }
                   </PDFDownloadLink>
                 )}
-
-                <button className="px-8 py-4 bg-transparent text-white border-2 border-white rounded-full font-semibold text-lg hover:bg-white hover:text-teal-900 transform hover:scale-105 transition-all duration-300">
-                  View Training
-                </button>
               </div>
             </div>
           </div>

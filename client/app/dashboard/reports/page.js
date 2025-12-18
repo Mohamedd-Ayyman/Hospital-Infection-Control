@@ -101,20 +101,20 @@ export default function InfectionReportsPage() {
   const getSeverityColor = (severity) => {
     switch (severity) {
       case "High":
-        return "text-red-400 bg-red-500";
+        return "text-white bg-red-500";
       case "Medium":
-        return "text-yellow-400 bg-yellow-500";
+        return "text-white bg-yellow-500";
       case "Low":
-        return "text-green-400 bg-green-500";
+        return "text-white bg-green-500";
       default:
-        return "text-gray-400 bg-gray-500";
+        return "text-white bg-gray-500";
     }
   };
 
   const getStatusColor = (status) => {
     return status === "Open"
-      ? "bg-orange-500 text-orange-400"
-      : "bg-green-500 text-green-400";
+      ? "bg-orange-500 text-white"
+      : "bg-green-500 text-white";
   };
 
   const filteredReports = reports.filter((report) =>
