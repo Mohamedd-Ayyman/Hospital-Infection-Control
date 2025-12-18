@@ -197,17 +197,6 @@ export default function Home() {
             </ul>
           </div>
         </div>
-
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button className="px-8 py-4 bg-gradient-to-r from-teal-500 to-green-500 text-white rounded-full font-semibold text-lg hover:from-teal-600 hover:to-green-600 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl">
-              Explore Documentation
-            </button>
-            <button className="px-8 py-4 bg-transparent text-white border-2 border-white rounded-full font-semibold text-lg hover:bg-white hover:text-teal-900 transform hover:scale-105 transition-all duration-300">
-              View Dashboard
-            </button>
-          </div>
-        </div>
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-teal-400 via-green-400 to-blue-400"></div>
