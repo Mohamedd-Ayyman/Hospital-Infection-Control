@@ -6,6 +6,7 @@ import userRouter from "./controllers/userController.js";
 import policyRouter from "./controllers/policyController.js";
 import infectionRouter from "./controllers/infectionReportController.js";
 import auditRouter from "./controllers/auditController.js";
+import sopRouter from "./controllers/sopController.js";
 
 const app = express();
 
@@ -28,5 +29,6 @@ app.use("/api/user", userRouter);
 app.use("/api/policy", policyRouter);
 app.use("/api/infection", infectionRouter);
 app.use("/api/audit", auditRouter);
+app.use("/api/sop", sopRouter);
 
 export default app;
