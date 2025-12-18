@@ -333,7 +333,7 @@ export default function InfectionReportsPage() {
                               </div>
                             </div>
 
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-3 text-white">
                               <span
                                 className={`px-3 py-1 text-xs ${getSeverityColor(
                                   report.severity
