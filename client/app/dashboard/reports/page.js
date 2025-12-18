@@ -278,7 +278,7 @@ export default function InfectionReportsPage() {
                       className={`px-6 py-3 rounded-full font-semibold transition-all ${
                         filterStatus === status
                           ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg"
-                          : "bg-white bg-opacity-10 text-white hover:bg-opacity-20"
+                          : "bg-white bg-opacity-10 text-black hover:bg-opacity-20"
                       }`}
                     >
                       {status}
