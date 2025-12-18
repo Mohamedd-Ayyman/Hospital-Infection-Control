@@ -207,7 +207,7 @@ export default function ChallengesPage() {
                     ))}
                   </div>
 
-                  <Link href="/electronic-audit">
+                  <Link href="/challenges/electronic-audit">
                     <button
                       className={`w-full bg-gradient-to-r ${item.solution.gradient} text-white rounded-2xl py-4 px-8 font-bold text-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300`}
                     >
@@ -243,7 +243,7 @@ export default function ChallengesPage() {
               Expected Impact
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
               <div className="bg-white/15 backdrop-blur-md border border-white/20 rounded-2xl p-8 text-center transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <div className="text-4xl mb-4">⚡</div>
                 <div className="text-3xl font-bold text-white mb-2">20%</div>
